@@ -60,5 +60,88 @@ namespace UnluCo.Week1.Controllers
                 Price = 900000
             }
         };
+        [HttpGet] //Tüm araçlar sıralanır.
+        public List<Cars> GetCars()
+        {
+            ;
+            var carList = CarsList.OrderBy(x => x.Id).ToList<Cars>();
+            return carList;
+        }
+        [HttpGet("{id}")] 
+        public Cars GetById(int id)
+        {
+            var cars = CarsList.Where(car => car.Id == id).SingleOrDefault();
+            return cars;
+        }
+        [HttpPost]
+        public IActionResult AddCar([FromQuery] Cars newCar)
+        {
+            var car = CarsList.SingleOrDefault(x => x.Id == newCar.Id);
+            if (car != null)
+            {
+                return BadRequest();
+            }
+            CarsList.Add(newCar);
+            return Ok();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateCar(int id, [FromBody] Cars updatedCar)
+        {
+            var car = CarsList.SingleOrDefault(x => x.Id == id);
+            if (car is null)
+            {
+                return BadRequest();
+            }
+            car.Brand = updatedCar.Brand != default ? updatedCar.Brand : car.Brand;
+            car.Model = updatedCar.Model != default ? updatedCar.Model : car.Model;
+            car.Year = updatedCar.Year != default ? updatedCar.Year : car.Year;
+            car.Km = updatedCar.Km != default ? updatedCar.Km : car.Km;
+            car.Price = updatedCar.Price != default ? updatedCar.Price : car.Price;
+            return Ok();
+        }
+
+        [HttpPatch("{id}")]
+        public IActionResult PatchCar(int id, [FromBody] Cars patchCars)
+        {
+            var carEdit = CarsList.SingleOrDefault(x => x.Id == id);
+            if (carEdit is null)
+            {
+                return BadRequest();
+            }
+            carEdit.Km = patchCars.Km;
+            carEdit.Price = patchCars.Price;
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult DeleteCar([FromQuery] int id)
+        {
+            var car = CarsList.SingleOrDefault(x => x.Id == id);
+            if (car is null)
+            {
+                return BadRequest();
+            }
+            CarsList.Remove(car);
+            return Ok();
+        }
+        //Listeleme
+        [HttpGet("listCarModel")]
+        public ActionResult<List<Cars>> GetByFilter([FromQuery] string filter)
+        {
+            var searchCar = CarsList.SingleOrDefault(x => x.Model.Contains(filter));
+            if (searchCar is null)
+            {
+                return NotFound();
+            }
+            return Ok(searchCar);
+        }
+        //Sıralama 
+        [HttpGet("orderByYear")]
+        public IActionResult OrderByYear()
+        {
+            var orderByYear = CarsList.OrderBy(x => x.Year);
+            return Ok(orderByYear);
+        }
     }
 }
