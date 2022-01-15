@@ -12,6 +12,7 @@ namespace UnluCo.Week1.Controllers
     [ApiController]
     public class CarsController : ControllerBase
     {
+        //Veriler statik olarak kullanılmıştır. Aşağıdaki veriler fake olarak eklenmiş rastgele araç verileridir.
         private static List<Cars> CarsList = new List<Cars>()
         {
             new Cars
@@ -60,18 +61,21 @@ namespace UnluCo.Week1.Controllers
                 Price = 900000
             }
         };
-        [HttpGet] //Tüm araçlar sıralanır.
+        //Tüm araçların sıralandığı GET metodu.
+        [HttpGet] 
         public List<Cars> GetCars()
         {
             var carList = CarsList.OrderBy(x => x.Id).ToList<Cars>();
             return carList;
         }
+        //Yalnızca istenilen ID numaralı araç bilgilerini getiren GET metodu.
         [HttpGet("{id}")] 
         public Cars GetById(int id)
         {
             var cars = CarsList.Where(car => car.Id == id).SingleOrDefault();
             return cars;
         }
+        //Yeni bir araç bilgisi eklemek için POST metodu.
         [HttpPost]
         public IActionResult AddCar([FromQuery] Cars newCar)
         {
@@ -83,7 +87,7 @@ namespace UnluCo.Week1.Controllers
             CarsList.Add(newCar);
             return Ok();
         }
-
+        //Belirli bir ID numaralı araç bilgilerini değiştirmek için kullanılan Put metodu.
         [HttpPut("{id}")]
         public IActionResult UpdateCar(int id, [FromBody] Cars updatedCar)
         {
@@ -99,7 +103,7 @@ namespace UnluCo.Week1.Controllers
             car.Price = updatedCar.Price != default ? updatedCar.Price : car.Price;
             return Ok();
         }
-
+        //Yalnızca aracın satış fiyatını değiştirmek için kullanılan Patch metodu.
         [HttpPatch("{id}")]
         public IActionResult PatchCar(int id, [FromBody] Cars patchCars)
         {
@@ -108,11 +112,10 @@ namespace UnluCo.Week1.Controllers
             {
                 return BadRequest();
             }
-            carEdit.Km = patchCars.Km;
             carEdit.Price = patchCars.Price;
             return Ok();
         }
-
+        //Belirli bir ID numaralı aracı silmek için kullanılan DELETE metodu.
         [HttpDelete]
         public IActionResult DeleteCar([FromQuery] int id)
         {
@@ -124,7 +127,7 @@ namespace UnluCo.Week1.Controllers
             CarsList.Remove(car);
             return Ok();
         }
-        //Araç Modeline Göre Sıralama
+        //Aracın model ismini girerek aynı isimli tüm araçları listeleyen GET metodu.
         [HttpGet("listCarModel")]
         public ActionResult<List<Cars>> GetByFilter([FromQuery] string filter)
         {
@@ -135,7 +138,7 @@ namespace UnluCo.Week1.Controllers
             }
             return Ok(searchCar);
         }
-        //Araç Yıllarına Göre Sıralama 
+        //Tüm araçları üretim yıllarına göre eskiden yeniye doğru sıralayan GET metodu. 
         [HttpGet("orderByYear")]
         public IActionResult OrderByYear()
         {

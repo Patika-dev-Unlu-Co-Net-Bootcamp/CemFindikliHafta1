@@ -1,6 +1,10 @@
-# 1. Hafta Ödev
+##Projenin Amacı:
+Bu projede basit bir ikinci el araç API`ı yapılmak amaçlanmıştır.
+Araç bilgileri statik olarak tutulmaktadır.
 
-1. Hafta ödevidir. Bu proje basit bir 2. el otomobil API`dır.
+
+
+# 1. Hafta Ödev
 
 Restful Api Geliştirin
 
