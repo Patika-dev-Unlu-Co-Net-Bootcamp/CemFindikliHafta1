@@ -63,7 +63,6 @@ namespace UnluCo.Week1.Controllers
         [HttpGet] //Tüm araçlar sıralanır.
         public List<Cars> GetCars()
         {
-            ;
             var carList = CarsList.OrderBy(x => x.Id).ToList<Cars>();
             return carList;
         }
@@ -125,7 +124,7 @@ namespace UnluCo.Week1.Controllers
             CarsList.Remove(car);
             return Ok();
         }
-        //Listeleme
+        //Araç Modeline Göre Sıralama
         [HttpGet("listCarModel")]
         public ActionResult<List<Cars>> GetByFilter([FromQuery] string filter)
         {
@@ -136,7 +135,7 @@ namespace UnluCo.Week1.Controllers
             }
             return Ok(searchCar);
         }
-        //Sıralama 
+        //Araç Yıllarına Göre Sıralama 
         [HttpGet("orderByYear")]
         public IActionResult OrderByYear()
         {
