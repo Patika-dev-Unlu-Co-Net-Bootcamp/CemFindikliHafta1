@@ -1,4 +1,7 @@
 # 1. Hafta Ödev
+
+1. Hafta ödevidir. Bu proje basit bir 2. el otomobil API`dır.
+
 Restful Api Geliştirin
 
 - Rest standartlarna uygun olmalıdır.
